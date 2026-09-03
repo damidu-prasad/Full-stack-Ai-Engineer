@@ -6,41 +6,28 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const sheets = await getGoogleSheetsClient();
     
-    // Full Application Data
+    // Minimal Lead Capture Data
     const row = [
       new Date().toLocaleString(), // Timestamp
       data.firstName || '',
       data.lastName || '',
       data.nic || '',
       data.email || '',
-      data.whatsapp || '',
-      data.primaryGoal || '',
-      data.biggestHurdle || '',
-      data.timeCommitment || '',
-      data.currentStage || '',
-      data.alYear || '',
-      data.alStream || '',
-      data.universityOrInstitute || '',
-      data.javaInstituteBatch || '',
-      data.customInstituteName || '',
-      data.currentProfessionField || '',
-      data.whySelectYou || '',
-      data.submissionLanguage || 'en',
-      'Fully Submitted' // Status
+      data.whatsapp || ''
     ];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:S', // Adjusted range for more columns
+      range: 'Sheet1!A:F', // Adjust range if needed
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [row],
       },
     });
 
-    return NextResponse.json({ success: true, message: "Application saved to Google Sheets" }, { status: 201 });
+    return NextResponse.json({ success: true, message: "Lead captured to Google Sheets" }, { status: 201 });
   } catch (error: any) {
-    console.error("Error saving application:", error);
+    console.error("Error saving lead:", error);
     return NextResponse.json({ success: false, error: error.message }, { status: 400 });
   }
 }
