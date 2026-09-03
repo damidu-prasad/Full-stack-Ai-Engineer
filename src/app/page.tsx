@@ -199,7 +199,7 @@ export default function ApplicationForm() {
       isValid = await trigger(["biggestHurdle", "timeCommitment"]);
       if (isValid) setStep(4);
     } else if (step === 4) {
-      isValid = await trigger(["currentStage", "alYear", "alStream", "universityOrInstitute", "javaInstituteBatch", "customInstituteName"]);
+      isValid = await trigger(["currentStage", "alYear", "alStream", "universityOrInstitute", "javaInstituteBatch", "customInstituteName", "currentProfessionField"]);
       if (isValid) setStep(5);
     }
   };
@@ -475,7 +475,7 @@ export default function ApplicationForm() {
                      {universityOrInstitute === "Java Institute for Advanced Technology" && (
                        <motion.div initial={{opacity:0}} animate={{opacity:1}}>
                           <label className="block text-sm font-medium mb-2 text-slate-300">{t.step4.javaBatch}</label>
-                          <input type="text" {...register("javaBatch")} className="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-lg outline-none focus:border-blue-500" />
+                          <input type="text" {...register("javaInstituteBatch")} className="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-lg outline-none focus:border-blue-500" />
                        </motion.div>
                      )}
                      

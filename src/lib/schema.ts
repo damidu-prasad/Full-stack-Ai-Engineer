@@ -23,20 +23,28 @@ export type Step1Data = z.infer<typeof step1Schema>;
 
 // Step 2: The Core Desire
 export const step2Schema = z.object({
-  primaryGoal: z.enum(['foundation_for_it', 'prep_for_degree', 'easier_campus_life', 'boost_job_productivity'], { required_error: "Please select a goal" }),
+  primaryGoal: z.enum(['foundation_for_it', 'prep_for_degree', 'easier_campus_life', 'boost_job_productivity'], {
+    message: "Please select a goal"
+  }),
 });
 export type Step2Data = z.infer<typeof step2Schema>;
 
 // Step 3: Quiz
 export const step3Schema = z.object({
-  biggestHurdle: z.enum(['fear_of_coding', 'lack_of_guidance', 'lack_of_time', 'dont_know_where_to_start'], { required_error: "Please select your biggest hurdle" }),
-  timeCommitment: z.enum(['1-2_hours', '2-4_hours', 'more_than_4'], { required_error: "Please select a time commitment" }),
+  biggestHurdle: z.enum(['fear_of_coding', 'lack_of_guidance', 'lack_of_time', 'dont_know_where_to_start'], {
+    message: "Please select your biggest hurdle"
+  }),
+  timeCommitment: z.enum(['1-2_hours', '2-4_hours', 'more_than_4'], {
+    message: "Please select a time commitment"
+  }),
 });
 export type Step3Data = z.infer<typeof step3Schema>;
 
 // Step 4: Background
 export const step4Schema = z.object({
-  currentStage: z.enum(['after_al', 'university', 'working'], { required_error: "Please select your current stage" }),
+  currentStage: z.enum(['after_al', 'university', 'working'], {
+    message: "Please select your current stage"
+  }),
   alYear: z.string().optional(),
   alStream: z.string().optional(),
   universityOrInstitute: z.string().optional(),
