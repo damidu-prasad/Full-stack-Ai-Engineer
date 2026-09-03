@@ -29,14 +29,25 @@ export async function POST(req: NextRequest) {
       'Fully Submitted' // Status
     ];
 
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A:S', // Adjusted range for more columns
-      valueInputOption: 'USER_ENTERED',
-      requestBody: {
-        values: [row],
-      },
-    });
+    if (data.rowNumber) {
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `Sheet1!A${data.rowNumber}:S${data.rowNumber}`,
+        valueInputOption: 'USER_ENTERED',
+        requestBody: {
+          values: [row],
+        },
+      });
+    } else {
+      await sheets.spreadsheets.values.append({
+        spreadsheetId: SPREADSHEET_ID,
+        range: 'Sheet1!A:S', // Adjusted range for more columns
+        valueInputOption: 'USER_ENTERED',
+        requestBody: {
+          values: [row],
+        },
+      });
+    }
 
     return NextResponse.json({ success: true, message: "Application saved to Google Sheets" }, { status: 201 });
   } catch (error: any) {

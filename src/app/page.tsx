@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import Select from "react-select";
-import { PsychologicalFormData } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { applicationSchema, PsychologicalFormData } from "@/lib/schema";
 
 const UNIVERSITIES = [
   "University of Colombo", "University of Peradeniya", "University of Moratuwa", "University of Kelaniya", 
@@ -157,6 +158,7 @@ export default function ApplicationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [rowNumber, setRowNumber] = useState<string | null>(null);
 
   const t = LABELS[lang];
 
@@ -168,6 +170,7 @@ export default function ApplicationForm() {
     control,
     formState: { errors },
   } = useForm<PsychologicalFormData>({
+    resolver: zodResolver(applicationSchema),
     mode: "onTouched",
   });
 
@@ -182,11 +185,15 @@ export default function ApplicationForm() {
       if (isValid) {
         try {
           const data = watch();
-          fetch("/api/applications/step1", {
+          const res = await fetch("/api/applications/step1", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
           });
+          const result = await res.json();
+          if (result.rowNumber) {
+            setRowNumber(result.rowNumber);
+          }
         } catch (e) {
           console.error("Failed to capture lead", e);
         }
@@ -211,7 +218,7 @@ export default function ApplicationForm() {
       const response = await fetch("/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, submissionLanguage: lang }),
+        body: JSON.stringify({ ...data, submissionLanguage: lang, rowNumber }),
       });
 
       if (response.ok) {
