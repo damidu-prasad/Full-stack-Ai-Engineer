@@ -20,13 +20,13 @@ export async function POST(req: NextRequest) {
       data.currentStatus === 'After A/L' ? `${data.afterALYear || ''} - ${data.afterALStream || ''}` : '',
       
       // 9. If Undergraduate: Degree & University
-      data.currentStatus === 'Undergraduate' ? `${data.undergradDegree || ''} from ${data.undergradUniversity || ''}` : '',
+      data.currentStatus === 'Undergraduate' ? `${data.undergradDegree || ''} from ${data.undergradUniversity === 'Other' ? data.otherUniversity : data.undergradUniversity || ''}` : '',
       
       // 10. If Degree: Degree & University
-      data.currentStatus === 'After Degree' ? `${data.degreeName || ''} from ${data.degreeUniversity || ''}` : '',
+      data.currentStatus === 'After Degree' ? `${data.degreeName || ''} from ${data.degreeUniversity === 'Other' ? data.otherUniversity : data.degreeUniversity || ''}` : '',
       
-      // 11. If Java Institute: Batch
-      data.javaInstituteBatch ? `Batch: ${data.javaInstituteBatch}` : '',
+      // 11. If Java Institute: Batch & Grad Year
+      data.javaInstituteBatch ? `Batch: ${data.javaInstituteBatch}${data.javaInstituteGradYear ? ' | Grad Year: ' + data.javaInstituteGradYear : ''}` : '',
       
       // 12. If Career Change: Previous Field & Reason
       data.currentStatus === 'Career Change' ? `Field: ${data.careerChangePreviousField || ''} | Reason: ${data.careerChangeReason || ''}` : '',
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       data.hasProgrammingKnowledge || '',
       
       // 14. If YES :Web Dev Frameworks Knowledge
-      data.webDevFrameworks?.join(', ') || '',
+      (data.webDevFrameworks?.length ? data.webDevFrameworks.join(', ') : '') + (data.otherSkills ? (data.webDevFrameworks?.length ? ', ' : '') + 'Other: ' + data.otherSkills : ''),
       
       // 15. Do you have AI/ML Knowledge (Including details if any)
       data.hasAIMLKnowledge === 'YES' ? `YES - ${data.aimlDetails || ''}` : 'NO',

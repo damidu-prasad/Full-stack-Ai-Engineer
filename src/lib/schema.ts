@@ -17,16 +17,19 @@ export const applicationSchema = z.object({
   
   degreeName: z.string().optional(),
   degreeUniversity: z.string().optional(),
+  otherUniversity: z.string().optional(),
   
   javaInstituteBatch: z.string().optional(),
   javaInstituteSemester: z.string().optional(),
+  javaInstituteGradYear: z.string().optional(),
   
   careerChangePreviousField: z.string().optional(),
   careerChangeReason: z.string().optional(),
   
-  hasProgrammingKnowledge: z.enum(['YES', 'NO']),
+  hasProgrammingKnowledge: z.enum(['YES', 'NO', 'Basic Knowledge']),
   webDevFrameworks: z.array(z.string()).optional(),
   customFrameworks: z.string().optional(),
+  otherSkills: z.string().optional(),
   
   hasAIMLKnowledge: z.enum(['YES', 'NO']),
   aimlDetails: z.string().optional(),

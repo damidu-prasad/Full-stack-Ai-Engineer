@@ -14,7 +14,7 @@ const sriLankanDistricts = [
 ];
 
 const universityList = [
-  'Our University', 'University of Moratuwa', 'University of Colombo', 'University of Kelaniya', 'University of Peradeniya', 'University of Sri Jayewardenepura', 'SLIIT', 'IIT', 'Java Institute for Advanced Technology', 'NSBM', 'NIBM', 'Other'
+  'University of Moratuwa', 'University of Colombo', 'University of Kelaniya', 'University of Peradeniya', 'University of Sri Jayewardenepura', 'SLIIT', 'IIT', 'Java Institute for Advanced Technology', 'NSBM', 'NIBM', 'Other'
 ];
 
 export default function ApplicationForm() {
@@ -63,6 +63,7 @@ export default function ApplicationForm() {
   const showJavaInstituteFields = 
     (currentStatus === "Undergraduate" && undergradUniversity === "Java Institute for Advanced Technology") ||
     (currentStatus === "After Degree" && degreeUniversity === "Java Institute for Advanced Technology");
+  const showOtherUniversityField = undergradUniversity === "Other" || degreeUniversity === "Other";
 
   const InputError = ({ name }: { name: keyof FormData }) => {
     if (!errors[name]) return null;
@@ -155,7 +156,7 @@ export default function ApplicationForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Contact Number</label>
+                <label className="block text-sm font-medium mb-1">WhatsApp Number</label>
                 <input {...register("contactNumber")} className="block w-full rounded-lg bg-white/5 border border-white/30 text-white placeholder-white/50 focus:border-blue-400 focus:ring-blue-400 p-3 outline-none transition" placeholder="0712345678" />
                 <InputError name="contactNumber" />
               </div>
@@ -236,6 +237,13 @@ export default function ApplicationForm() {
                 </div>
               )}
 
+              {showOtherUniversityField && (
+                <div className="mt-6 animate-in fade-in slide-in-from-top-4">
+                  <label className="block text-sm font-medium mb-1">Please specify your University</label>
+                  <input {...register("otherUniversity")} className="block w-full rounded-lg bg-white/5 border border-white/30 text-white placeholder-white/50 p-3 outline-none" placeholder="Enter University Name" />
+                </div>
+              )}
+
               {currentStatus === "Career Change" && (
                 <div className="space-y-6 animate-in fade-in slide-in-from-top-4">
                   <div>
@@ -254,9 +262,17 @@ export default function ApplicationForm() {
             {showJavaInstituteFields && (
               <div className="mt-6 border border-white/20 rounded-2xl p-6 bg-white/10 shadow-sm animate-in fade-in slide-in-from-top-4">
                 <label className="block text-sm font-semibold mb-4 text-blue-200">Java Institute Student Details</label>
-                <div>
-                  <label className="block text-xs font-medium mb-1 text-white/80">Batch</label>
-                  <input {...register("javaInstituteBatch")} className="block w-full rounded-lg bg-white/5 border border-white/30 text-white placeholder-white/50 p-3 outline-none" placeholder="e.g. 21.1" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-xs font-medium mb-1 text-white/80">Batch</label>
+                    <input {...register("javaInstituteBatch")} className="block w-full rounded-lg bg-white/5 border border-white/30 text-white placeholder-white/50 p-3 outline-none" placeholder="e.g. 21.1" />
+                  </div>
+                  {currentStatus === "After Degree" && (
+                    <div>
+                      <label className="block text-xs font-medium mb-1 text-white/80">Graduation Year (Out una year)</label>
+                      <input {...register("javaInstituteGradYear")} className="block w-full rounded-lg bg-white/5 border border-white/30 text-white placeholder-white/50 p-3 outline-none" placeholder="e.g. 2023" />
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -279,21 +295,29 @@ export default function ApplicationForm() {
                     <span className="font-medium group-hover:text-blue-300 transition">YES</span>
                   </label>
                   <label className="flex items-center space-x-3 cursor-pointer group">
+                    <input type="radio" value="Basic Knowledge" {...register("hasProgrammingKnowledge")} className="w-5 h-5 text-blue-400 bg-white/10 border-white/30 focus:ring-blue-400 cursor-pointer" />
+                    <span className="font-medium group-hover:text-blue-300 transition">Basic Knowledge</span>
+                  </label>
+                  <label className="flex items-center space-x-3 cursor-pointer group">
                     <input type="radio" value="NO" {...register("hasProgrammingKnowledge")} className="w-5 h-5 text-blue-400 bg-white/10 border-white/30 focus:ring-blue-400 cursor-pointer" />
                     <span className="font-medium group-hover:text-blue-300 transition">NO</span>
                   </label>
                 </div>
 
-                {hasProgrammingKnowledge === "YES" && (
+                {(hasProgrammingKnowledge === "YES" || hasProgrammingKnowledge === "Basic Knowledge") && (
                   <div className="mt-6 animate-in fade-in slide-in-from-top-4">
-                    <label className="block text-sm font-medium mb-3">Web Dev Frameworks Knowledge</label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <label className="block text-sm font-medium mb-3">Select your skills</label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                       {["React", "Angular", "Vue", "Next.js", "Express", "Django", "Spring Boot", "Laravel"].map((framework) => (
                         <label key={framework} className="flex items-center space-x-3 bg-white/10 p-3 rounded-lg border border-white/20 cursor-pointer hover:border-blue-400 hover:bg-white/20 transition">
                           <input type="checkbox" value={framework} {...register("webDevFrameworks")} className="w-4 h-4 text-blue-400 bg-white/10 border-white/30 rounded focus:ring-blue-400" />
                           <span className="text-sm font-medium">{framework}</span>
                         </label>
                       ))}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Other Skills (Type if you have any additional skills)</label>
+                      <textarea {...register("otherSkills")} rows={2} className="block w-full rounded-lg bg-white/5 border border-white/30 text-white placeholder-white/50 p-3 outline-none" placeholder="e.g. Node.js, PHP, Ruby on Rails" />
                     </div>
                   </div>
                 )}
