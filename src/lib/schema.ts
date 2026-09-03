@@ -26,7 +26,7 @@ export const applicationSchema = z.object({
   careerChangePreviousField: z.string().optional(),
   careerChangeReason: z.string().optional(),
   
-  hasProgrammingKnowledge: z.enum(['YES', 'NO', 'Basic Knowledge']),
+  hasProgrammingKnowledge: z.enum(['YES', 'NO']),
   webDevFrameworks: z.array(z.string()).optional(),
   customFrameworks: z.string().optional(),
   otherSkills: z.string().optional(),

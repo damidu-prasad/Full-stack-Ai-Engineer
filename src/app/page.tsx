@@ -295,20 +295,16 @@ export default function ApplicationForm() {
                     <span className="font-medium group-hover:text-blue-300 transition">YES</span>
                   </label>
                   <label className="flex items-center space-x-3 cursor-pointer group">
-                    <input type="radio" value="Basic Knowledge" {...register("hasProgrammingKnowledge")} className="w-5 h-5 text-blue-400 bg-white/10 border-white/30 focus:ring-blue-400 cursor-pointer" />
-                    <span className="font-medium group-hover:text-blue-300 transition">Basic Knowledge</span>
-                  </label>
-                  <label className="flex items-center space-x-3 cursor-pointer group">
                     <input type="radio" value="NO" {...register("hasProgrammingKnowledge")} className="w-5 h-5 text-blue-400 bg-white/10 border-white/30 focus:ring-blue-400 cursor-pointer" />
                     <span className="font-medium group-hover:text-blue-300 transition">NO</span>
                   </label>
                 </div>
 
-                {(hasProgrammingKnowledge === "YES" || hasProgrammingKnowledge === "Basic Knowledge") && (
+                {hasProgrammingKnowledge === "YES" && (
                   <div className="mt-6 animate-in fade-in slide-in-from-top-4">
                     <label className="block text-sm font-medium mb-3">Select your skills</label>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                      {["React", "Angular", "Vue", "Next.js", "Express", "Django", "Spring Boot", "Laravel"].map((framework) => (
+                      {["HTML", "CSS", "JavaScript", "React", "Angular", "Vue", "Next.js", "Express", "Django", "Spring Boot", "Laravel", "Node.js"].map((framework) => (
                         <label key={framework} className="flex items-center space-x-3 bg-white/10 p-3 rounded-lg border border-white/20 cursor-pointer hover:border-blue-400 hover:bg-white/20 transition">
                           <input type="checkbox" value={framework} {...register("webDevFrameworks")} className="w-4 h-4 text-blue-400 bg-white/10 border-white/30 rounded focus:ring-blue-400" />
                           <span className="text-sm font-medium">{framework}</span>
